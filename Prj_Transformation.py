@@ -54,13 +54,13 @@ out_defn = out_lyr.GetLayerDefn()
 out_feat = ogr.Feature(out_defn)
 # Loop over all features and changing the spatial ref
 for in_feat in layer:
-    geom = in_feat.geometry()
+    geom = in_feat.GetGeometryRef()
     geom.Transform(transform)
     out_feat.SetGeometry(geom)
     # Adding the attributes in the new file
-    for i in range(in_feat.GetFieldCount()):
+    for i in range(out_defn.GetFieldCount()):
         value = in_feat.GetField(i)
-        out_feat.SetField(i, value)
+        out_feat.SetField(out_defn.GetFieldDefn(i).GetNameRef(), value)
     out_lyr.CreateFeature(out_feat)
 
 del out_ds
