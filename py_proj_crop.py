@@ -16,15 +16,8 @@ shape = driver.Open(reproj_shp, 0)
 shp_lyr = shape.GetLayer(0)
 
 #BoundingBox of Shapefile
-bbox_lyr = shp_lyr.GetExtent()
-list(bbox_lyr)
-print('Bounding Box created:', bbox_lyr)
-
-#Clipping Coordinates (min = lower left corner; max = upper right corner)
-x_min = bbox_lyr[0]
-y_min = bbox_lyr[2]
-x_max = bbox_lyr[1]
-y_max = bbox_lyr[3]
+x_min, x_max, y_min, y_max = shp_lyr.GetExtent()
+print("GetExtent returned", x_min, x_max, y_min, y_max)
 
 
 # Getting the object to translate coordinates to indices
@@ -51,8 +44,10 @@ out_rows = y1 - y2 + buffer
 #Output Clipped Raster
 clipped_raster = os.path.join(work_dir,'clipped_raster','clipped_gm_lc.tif')
 driver = gdal.GetDriverByName("GTiff")
+print("Out size", out_columns, out_rows)
 out_ds = driver.Create(clipped_raster, out_columns, out_rows, 1, gdal.GDT_UInt32)
-out_ds.SetProjection(rast_data_source.GetProjection())
+projection = rast_data_source.GetProjection()
+out_ds.SetProjection(projection)
 
 # Applying Geotransform
 out_gt = list(gt)
