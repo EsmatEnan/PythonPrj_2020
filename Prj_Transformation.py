@@ -34,6 +34,8 @@ print('Spatial reference system of the vector is: ', vect_spatial_ref)
 
 # creating osr object of land use`s spatial ref info
 sr = osr.SpatialReference(rast_spatial_ref)
+sr.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
+
 transform = osr.CoordinateTransformation(vect_spatial_ref, sr)
 
 # Deleting if output file already exists
