@@ -3,12 +3,12 @@ import ogr
 import os
 import osr
 # Locating the land use data
-raster = "C:/Users/enan/Desktop/PIG_Prj/Landuse/gm_lc_v3_1_2.tif"
+raster = r"E:\Munster\python\final project\Data\gm_lc_v3_1_2.tif"
 # Locating the goose point data
-vecPoint = "C:/Users/enan/Desktop/PIG_Prj/Goose/points.shp"
+vecPoint = r"E:\Munster\python\final project\movebank\goose\points.shp"
 
 # Locating ouput file ptah
-out_file = "C:/Users/enan/Desktop/PIG_Prj/Prj/pointsPrj.shp"
+out_file = r"E:\Munster\python\final project\movebank\goose\outputs\pointsPrj.shp"
 
 # Access the land use
 rast_data_source = gdal.Open(raster)
