@@ -1,6 +1,6 @@
 # This code is from: https://gis.stackexchange.com/questions/76909/load-raster-values-into-shapefile
 # But gives the following error:
-#          TypeError: a bytes-like object is required, not 'NoneType'
+# TypeError: a bytes-like object is required, not 'NoneType'
 # From what I have searched, it's because this code was developed in
 # a old python version, trying to figure it out. But it's the only option of doing
 # this task using QGIS/Open Source Library
