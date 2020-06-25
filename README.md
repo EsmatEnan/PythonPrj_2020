@@ -15,9 +15,9 @@ The methodological steps are listed below:
   -Create a map of goose tracks.
 
 
-# Libraray: 
+# Libraray 
 gdal, ogr and matplotlib
 
-# Contributors:
+# Contributors
 Eftychia Koukouraki, Mohammad Alasawedah, Muhammad Esmat Enan, Pablo Cruz
 
