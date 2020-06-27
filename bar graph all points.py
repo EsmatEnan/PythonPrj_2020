@@ -10,7 +10,7 @@ lyr=ds.GetLayer(0)
 # put all landcover classes in a list
 class_list = []
 for feat in lyr:
-    classes = feat['la1']
+    classes = feat['land cover']
     class_list.append(classes)
 
 # count the occurance of each lancover class and put it in a dictionary
