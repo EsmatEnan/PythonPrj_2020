@@ -2,13 +2,13 @@ import os
 import gdal
 import ogr
 
-
-raster = r"E:\Munster\python\final project\Data\gm_lc_v3_1_2.tif"
+data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
+raster = os.path.join(data_dir, 'Land_Use', 'gm_lc_v3_1_2.tif')
 rast_data_source = gdal.Open(raster)
 
 ####### Cropping the raster #######
 
-reproj_shp = r"E:\Munster\python\final project\movebank\goose\points.shp"
+reproj_shp = os.path.join(data_dir, 'goose', 'points.shp')
 driver = ogr.GetDriverByName('ESRI Shapefile')
 shape = driver.Open(reproj_shp, 0)
 shp_lyr = shape.GetLayer(0)
@@ -40,10 +40,10 @@ out_columns = x2 - x1 + buffer
 out_rows = y1 - y2 + buffer
 
 #Output Clipped Raster
-clipped_raster = r"E:\Munster\python\final project\movebank\goose\outputs\clipped_raster.tif"
+clipped_raster = os.path.join(data_dir, 'clipped_raster_byte.tif')
 driver = gdal.GetDriverByName("GTiff")
 print("Out size", out_columns, out_rows)
-out_ds = driver.Create(clipped_raster, out_columns, out_rows, 1, gdal.GDT_UInt32)
+out_ds = driver.Create(clipped_raster, out_columns, out_rows, 1, gdal.GDT_Byte)
 projection = rast_data_source.GetProjection()
 out_ds.SetProjection(projection)
 
