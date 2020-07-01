@@ -31,12 +31,12 @@ caps = layer.dataProvider().capabilities()
 
 # Adding a field (attribute)
 if caps & QgsVectorDataProvider.AddAttributes:
-    res = layer.dataProvider().addAttributes([QgsField("interv_nxt", QVariant.String)])
+    res = layer.dataProvider().addAttributes([QgsField("interv_prv", QVariant.String)])
 print(res)
 layer.updateFields()
 
 fields = layer.fields()
-field_idx = fields.indexFromName('interv_nxt')
+field_idx = fields.indexFromName('interv_prv')
 print(field_idx)
 
 datetime_format = "%Y-%m-%d %H:%M:%S"
@@ -50,10 +50,13 @@ for bird in unique_values:
             dict[feat.id()] =  feat.attribute('timestamp')
     #sort it
     dict_sorted = sorted(dict.items(), key=lambda x: x[1]) # creates list of tuples
-    for i in range( len(dict_sorted) -1 ):
+    for i in range( len(dict_sorted) ):
+        if (i == 0):
+            print("i=0")
+            continue
         time1 = dict_sorted[i][1]
-        time2 = dict_sorted[i+1][1]
-        tdelta = datetime.strptime(time2, datetime_format) - datetime.strptime(time1, datetime_format)
+        time2 = dict_sorted[i-1][1]
+        tdelta = datetime.strptime(time1, datetime_format) - datetime.strptime(time2, datetime_format)
 #        print(tdelta)
 
         attr = { field_idx : str(tdelta) }

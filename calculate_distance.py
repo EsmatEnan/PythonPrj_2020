@@ -31,12 +31,12 @@ caps = layer.dataProvider().capabilities()
 
 # Adding a field (attribute)
 if caps & QgsVectorDataProvider.AddAttributes:
-    res = layer.dataProvider().addAttributes([QgsField("dist_nxt", QVariant.Double)])
+    res = layer.dataProvider().addAttributes([QgsField("dist_prv", QVariant.Double)])
 print(res)
 layer.updateFields()
 
 fields = layer.fields()
-field_idx = fields.indexFromName('dist_nxt')
+field_idx = fields.indexFromName('dist_prv')
 print(field_idx)
 
 for bird in unique_values:
@@ -50,13 +50,15 @@ for bird in unique_values:
     dict_sorted = sorted(dict.items(), key=lambda x: x[1]) # creates list of tuples
     #print(dict)
     #print(dict_sorted)
-    for i in range( len(dict_sorted) -1 ):
-        #print(dict_sorted[i][1], dict_sorted[i+1][1])
+    for i in range( len(dict_sorted) ):
+        if (i == 0):
+            print("i=0")
+            continue
         current_feat = layer.getFeature(dict_sorted[i][0])
-        next_feat = layer.getFeature(dict_sorted[i+1][0])
+        prv_feat = layer.getFeature(dict_sorted[i-1][0])
         #print(current_feat['utm_east'], current_feat['utm_north'])
         point1 = QgsPoint(current_feat.attribute('utm_east'), current_feat.attribute('utm_north'))
-        point2 = QgsPoint(next_feat.attribute('utm_east'), next_feat.attribute('utm_north'))
+        point2 = QgsPoint(prv_feat.attribute('utm_east'), prv_feat.attribute('utm_north'))
         #print(point1, point2)
         distance = point1.distance(point2)
         #print(distance)
