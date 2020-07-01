@@ -25,7 +25,7 @@ caps = layer.dataProvider().capabilities()
 
 # Adding a field (attribute)
 if caps & QgsVectorDataProvider.AddAttributes:
-    res = layer.dataProvider().addAttributes([QgsField("km_p_h", QVariant.String)])
+    res = layer.dataProvider().addAttributes([QgsField("km_p_h", QVariant.Double)])
 print(res)
 layer.updateFields()
 
