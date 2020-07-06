@@ -7,7 +7,7 @@ classes = pd.Series({0:'Broadleaf Evergreen Forest',1:'Broadleaf Deciduous Fores
                      2:'Needleleaf Evergreen Forest',3:'Needleleaf Deciduous Forest',
                      4:'Mixed Forest',5:'Tree Open',6:'Shrub',7:'Herbaceous',
                      8:'Tree/Shrub',9:'Sparse vegetation',
-                     10:'Cropland',11:'Paddy field',12:'Cropland',13:'Mangrove',
+                     10:'Cropland',11:'Paddy field',12:'Cropland/Other Vegetation Mosaic',13:'Mangrove',
                      14:'Wetland',15:'gravel,rock',16:'sand',17:'Urban',
                      18:'Snow/Ice',19:'Water bodies'
 
