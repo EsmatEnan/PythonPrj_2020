@@ -1,6 +1,9 @@
 import pandas as pd
 import ogr
 
+#user input
+in_file = r"E:\Munster\python\final project\movebank\goose\outputs\pointsPrj.shp"
+
 # create codes & classes serieses
 codes = pd.Series(range(1,21))
 classes = pd.Series({0:'Broadleaf Evergreen Forest',1:'Broadleaf Deciduous Forest',
@@ -17,7 +20,6 @@ classes = pd.Series({0:'Broadleaf Evergreen Forest',1:'Broadleaf Deciduous Fores
 landcover = pd.DataFrame({'code': codes,'land cover': classes})
 
 #open the track shape file
-in_file = r"E:\Munster\python\final project\movebank\goose\outputs\pointsPrj.shp"
 ds=ogr.Open(in_file,1)
 lyr=ds.GetLayer(0)
 

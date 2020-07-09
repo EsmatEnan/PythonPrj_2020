@@ -96,7 +96,7 @@ for feat in layer.getFeatures():
     distance = feat.attribute('dist_prv')
     time = feat.attribute('interv_prv')
     if (distance and time not in [None, "", "NULL", 0]):
-        print(distance, time)
+        # print(distance, time)
         speed = (distance/1000) / convertTimeStringToHours(time)
         attr = { speed_idx : speed }
         if caps & QgsVectorDataProvider.AddAttributes:
