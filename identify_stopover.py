@@ -4,10 +4,11 @@ import qgis.utils
 import ogr
 import pandas as pd
 
+#user input
+in_file = r"E:\Munster\python\final project\movebank\goose\outputs\points_reprojected.shp"
+out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers.shp"
+new_layer_name = 'stopovers'
 
-#open the track shape file
-in_file = r"E:\Munster\python\final project\GoosePointPrj\GoosePointPrj\Added_fields\points_reprojected.shp"
-driver = ogr.GetDriverByName('ESRI Shapefile')
 ds=driver.Open(in_file,1)
 
 # Check to see if shapefile is found.
@@ -15,9 +16,6 @@ if ds is None:
     print('Could not open %s' % (in_file))
 
 in_lyr = ds.GetLayer(0)
-
-# Create the output file
-out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers3.shp"
 
 # Delete if output file already exists
 if os.path.exists(out_fn):
@@ -29,7 +27,7 @@ if out_ds is None:
     print('Could not open %s' % (out_fn))
 
 #crate the output layer
-out_lyr = out_ds.CreateLayer('stopovers3',
+out_lyr = out_ds.CreateLayer(new_layer_name,
                              in_lyr.GetSpatialRef(),
                              ogr.wkbPoint)
 
