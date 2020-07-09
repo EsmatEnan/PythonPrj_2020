@@ -4,6 +4,9 @@ import ogr
 
 data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
 raster = os.path.join(data_dir, 'Land_Use', 'gm_lc_v3_1_2.tif')
+clipped_raster = os.path.join(data_dir, 'clipped_raster_byte.tif')
+
+
 rast_data_source = gdal.Open(raster)
 
 ####### Cropping the raster #######
@@ -40,7 +43,6 @@ out_columns = x2 - x1 + buffer
 out_rows = y1 - y2 + buffer
 
 #Output Clipped Raster
-clipped_raster = os.path.join(data_dir, 'clipped_raster_byte.tif')
 driver = gdal.GetDriverByName("GTiff")
 print("Out size", out_columns, out_rows)
 out_ds = driver.Create(clipped_raster, out_columns, out_rows, 1, gdal.GDT_Byte)
