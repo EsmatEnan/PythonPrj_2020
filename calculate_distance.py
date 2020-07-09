@@ -1,6 +1,11 @@
 import os
 from qgis.core import *
 import qgis.utils
+from datetime import datetime
+
+# User inputs
+data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
+shape_file = os.path.join(data_dir, 'goose', 'points_reprojected.shp')
 
 def getColumnValues(layer, field):
     values = []
@@ -12,32 +17,48 @@ def getColumnValues(layer, field):
         print("Function getColumnValues failed, because", e)
     return values
 
+def addFieldtoLayer(field_name, field_type):
+    # Adding a field (attribute)
+    if caps & QgsVectorDataProvider.AddAttributes:
+        res = layer.dataProvider().addAttributes([QgsField(field_name, field_type)])
+    print(res)
+    layer.updateFields()
 
-# path to shapefile we want to add the new field
-data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
-shape_file = os.path.join(data_dir, 'goose', 'points_reprojected.shp')
+    fields = layer.fields()
+    field_idx = fields.indexFromName(field_name)
+    print(field_idx)
+    return field_idx
+
+def calculateDistance(item1, item2):
+    current_feat = layer.getFeature(item1)
+    prv_feat = layer.getFeature(item2)
+    point1 = QgsPoint(current_feat.attribute('utm_east'), current_feat.attribute('utm_north'))
+    point2 = QgsPoint(prv_feat.attribute('utm_east'), prv_feat.attribute('utm_north'))
+    distance = point1.distance(point2)
+    attr = { distance_idx : distance }
+    return { current_feat.id() : attr }
+
+def calculateTimeInterval(item1, item2, attr_key):
+    tdelta = datetime.strptime(item1, datetime_format) - datetime.strptime(item2, datetime_format)
+    attr = { time_interval_idx : str(tdelta) }
+    return { dict_sorted[i][0] : attr }
 
 layer = iface.addVectorLayer(shape_file, "shape:", "ogr")
 
 if not layer:
     print("Shapefile failed to load!")
 
-values = getColumnValues(layer, 'ind_ident')
-unique_values = list(set(values))
-#print(unique_values)
-
 # Check for editing rights (capabilities)
 caps = layer.dataProvider().capabilities()
 
-# Adding a field (attribute)
-if caps & QgsVectorDataProvider.AddAttributes:
-    res = layer.dataProvider().addAttributes([QgsField("dist_prv", QVariant.Double)])
-print(res)
-layer.updateFields()
+distance_idx = addFieldtoLayer("dist_prv", QVariant.Double)
+time_interval_idx = addFieldtoLayer("interv_prv", QVariant.String)
+#speed_idx = addFieldtoLayer("km_p_h", QVariant.Double)
 
-fields = layer.fields()
-field_idx = fields.indexFromName('dist_prv')
-print(field_idx)
+values = getColumnValues(layer, 'ind_ident')
+unique_values = list(set(values))
+
+datetime_format = "%Y-%m-%d %H:%M:%S"
 
 for bird in unique_values:
     print(bird)
@@ -48,23 +69,15 @@ for bird in unique_values:
             dict[feat.id()] =  feat.attribute('timestamp')
     #sort it
     dict_sorted = sorted(dict.items(), key=lambda x: x[1]) # creates list of tuples
-    #print(dict)
-    #print(dict_sorted)
     for i in range( len(dict_sorted) ):
         if (i == 0):
-            print("i=0")
+            #print("i=0")
             continue
-        current_feat = layer.getFeature(dict_sorted[i][0])
-        prv_feat = layer.getFeature(dict_sorted[i-1][0])
-        #print(current_feat['utm_east'], current_feat['utm_north'])
-        point1 = QgsPoint(current_feat.attribute('utm_east'), current_feat.attribute('utm_north'))
-        point2 = QgsPoint(prv_feat.attribute('utm_east'), prv_feat.attribute('utm_north'))
-        #print(point1, point2)
-        distance = point1.distance(point2)
-        #print(distance)
-        attr = { field_idx : distance }
+        dist = calculateDistance(dict_sorted[i][0], dict_sorted[i-1][0])
+        time_interval = calculateTimeInterval(dict_sorted[i][1], dict_sorted[i-1][1], dict_sorted[i][0])
         if caps & QgsVectorDataProvider.AddAttributes:
-            layer.dataProvider().changeAttributeValues({ current_feat.id() : attr })
+            layer.dataProvider().changeAttributeValues(dist)
+            layer.dataProvider().changeAttributeValues(time_interval)
         else:
             print("Not allowed")
     
