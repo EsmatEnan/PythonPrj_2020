@@ -68,8 +68,3 @@ for in_feat in layer:
 del out_ds
 
 print('Projection Tansformation has been done')
-
-
-
-
-
