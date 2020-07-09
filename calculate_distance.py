@@ -17,6 +17,15 @@ def getColumnValues(layer, field):
         print("Function getColumnValues failed, because", e)
     return values
 
+def convertTimeStringToHours(input_string):
+    hours = 0
+    if ("day" in input_string):
+        hours = 24*int(input_string[0])
+        input_string = input_string.split(', ')[1]
+    hours = hours + int(input_string.split(':', 1)[0])
+    print(hours)
+    return hours
+
 def addFieldtoLayer(field_name, field_type):
     # Adding a field (attribute)
     if caps & QgsVectorDataProvider.AddAttributes:
@@ -53,7 +62,7 @@ caps = layer.dataProvider().capabilities()
 
 distance_idx = addFieldtoLayer("dist_prv", QVariant.Double)
 time_interval_idx = addFieldtoLayer("interv_prv", QVariant.String)
-#speed_idx = addFieldtoLayer("km_p_h", QVariant.Double)
+speed_idx = addFieldtoLayer("km_p_h", QVariant.Double)
 
 values = getColumnValues(layer, 'ind_ident')
 unique_values = list(set(values))
@@ -82,5 +91,19 @@ for bird in unique_values:
             print("Not allowed")
     
     layer.updateFields()
+
+for feat in layer.getFeatures():
+    distance = feat.attribute('dist_prv')
+    time = feat.attribute('interv_prv')
+    if (distance and time not in [None, "", "NULL", 0]):
+        print(distance, time)
+        speed = (distance/1000) / convertTimeStringToHours(time)
+        attr = { speed_idx : speed }
+        if caps & QgsVectorDataProvider.AddAttributes:
+            layer.dataProvider().changeAttributeValues({ feat.id() : attr })
+        else:
+            print("Not allowed")
+    
+layer.updateFields()
 
 print('END')
