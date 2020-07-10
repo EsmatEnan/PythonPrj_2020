@@ -16,14 +16,14 @@ lyr1=ds1.GetLayer(0)
 # put all landcover classes for all points in a list
 class_list = []
 for feat in lyr:
-    classes = feat['la1']
+    classes = feat['landcover']
     class_list.append(classes)
 
 # put all landcover classes for stopover points in a list
 class_list1 = []
 print (class_list1)
 for feat in lyr1:
-    classes1 = feat['landss']
+    classes1 = feat['landcover']
     class_list1.append(classes1)
 
 
@@ -41,10 +41,11 @@ print(class_dic1)
 allpoints_labels = class_dic.keys()
 stopover_labels =  class_dic1.keys()
 
-# to make the color cycle more than 15 colors
-import random
-import matplotlib.colors as mcolors
-colors = random.choices(list(mcolors.CSS4_COLORS.values()),k = 15)
+# to make the color cycle more than 15 colors & use the same color for the two charts
+colors = {'red', 'blue','yellow','green', 'orange',
+          'goldenrod', 'gold','aqua','violet',
+          'pink','gray', 'lawngreen',
+          'teal', 'cadetblue', 'lightgreen'}
 
 
 # create pie charts for fly points
