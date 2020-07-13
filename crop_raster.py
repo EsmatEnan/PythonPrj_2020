@@ -2,9 +2,9 @@ import os
 import gdal
 import ogr
 
-data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
-raster = os.path.join(data_dir, 'Land_Use', 'gm_lc_v3_1_2.tif')
-clipped_raster = os.path.join(data_dir, 'clipped_raster_byte.tif')
+data_dir = r"E:\Munster\python\final project\Data"
+raster = os.path.join(data_dir,'gm_lc_v3_1_2.tif')
+clipped_raster = os.path.join(data_dir, 'clipped_raster_byte3.tif')
 
 
 rast_data_source = gdal.Open(raster)
@@ -24,10 +24,10 @@ print("GetExtent returned", x_min, x_max, y_min, y_max)
 # Getting the object to translate coordinates to indices
 gt = rast_data_source.GetGeoTransform()
 inv_gt = gdal.InvGeoTransform(gt)
-
+buffer = 2
 # Converting BBox coordinates to raster indices
-x1, y1= gdal.ApplyGeoTransform(inv_gt, x_min, y_min)
-x2, y2= gdal.ApplyGeoTransform(inv_gt, x_max, y_max)
+x1, y1= gdal.ApplyGeoTransform(inv_gt, x_min - buffer, y_min - buffer)
+x2, y2= gdal.ApplyGeoTransform(inv_gt, x_max + buffer, y_max + buffer)
 
 # Turning indices into integers variables
 x1 = int(x1)
@@ -36,11 +36,11 @@ x2 = int(x2)
 y2 = int(y2)
 print("Lower left corner:", x1, y1, '\t', "Upper Right Corner:", x2, y2)
 
-buffer = 2000
+
 
 #Clipping Settings
-out_columns = x2 - x1 + buffer
-out_rows = y1 - y2 + buffer
+out_columns = x2 - x1 
+out_rows = y1 - y2 
 
 #Output Clipped Raster
 driver = gdal.GetDriverByName("GTiff")
@@ -51,8 +51,8 @@ out_ds.SetProjection(projection)
 
 # Applying Geotransform
 out_gt = list(gt)
-out_gt[0] = x_min - 2 
-out_gt[3] = y_max + 2
+out_gt[0] = x_min - buffer
+out_gt[3] = y_max  + buffer
 print(out_gt)
 out_ds.SetGeoTransform(out_gt)
 
