@@ -16,56 +16,83 @@ lyr1=ds1.GetLayer(0)
 # put all landcover classes for all points in a list
 class_list = []
 for feat in lyr:
-    classes = feat['landcover']
+    classes = feat['landss']
     class_list.append(classes)
 
 # put all landcover classes for stopover points in a list
 class_list1 = []
 print (class_list1)
 for feat in lyr1:
-    classes1 = feat['landcover']
+    classes1 = feat['landss']
     class_list1.append(classes1)
 
 
 
 # count the occurance of each lancover class in all points and put it in a dictionary
 class_dic = dict((x,class_list.count(x)) for x in set(class_list))
-print(class_dic)
 
 # count the occurance of each lancover class in stopover points and put it in a dictionary
 class_dic1 = dict((x1,class_list1.count(x1)) for x1 in set(class_list1))
-print(class_dic1)
 
 # create pie charts 
 #Get the labels (class names)
 allpoints_labels = class_dic.keys()
 stopover_labels =  class_dic1.keys()
 
-# to make the color cycle more than 15 colors & use the same color for the two charts
-colors = {'red', 'blue','yellow','green', 'orange',
-          'goldenrod', 'gold','aqua','violet',
-          'pink','gray', 'lawngreen',
-          'teal', 'cadetblue', 'lightgreen'}
-
+#create color dictionary to use the same color for the teo charts
+dic_color = {'Cropland': 'red', 'Wetland': 'blue',
+             'Needleleaf Evergreen Forest': 'yellow',
+             'Needleleaf Deciduous Forest': 'green',
+             'Shrub': 'orange', 'Water bodies': 'goldenrod',
+             'Paddy field': 'gold',
+             'Cropland/Other Vegetation Mosaic': 'aqua',
+             'Sparse vegetation': 'violet',
+             'Herbaceous': 'pink',
+             'Broadleaf Deciduous Forest': 'gray',
+             'Mixed Forest': 'lawngreen',
+             'Urban': 'teal','Tree Open': 'cadetblue',
+             'Broadleaf Evergreen Forest': 'lightgreen'}
 
 # create pie charts for fly points
 f1= plt.figure( figsize=(5,8))
-plt.pie(class_dic.values(), colors=colors, startangle=90)
+## a percentage label when it is more than 2%
+def autopct(pct):
+    return ('%1.1f%%' % pct) if pct > 2 else ''
+
+## retrive the patch widges & texts of the plot
+fly_widges = plt.pie(class_dic.values(),labels = allpoints_labels,autopct=autopct,startangle=90,labeldistance=1.05)
+## change the color of each class depend on the color dictionary  
+for fly_widge in fly_widges[0]:
+    fly_widge.set_facecolor(dic_color[fly_widge.get_label()])
+## hide the labels of each class on the chart to avoid the overlapping labels
+for fly_widge in fly_widges[1]:
+    fly_widge.set_text(' ')
+
+## set title & legend
 f1.suptitle('Land cover for the fly points')
 legend1 = plt.legend(allpoints_labels, loc="right")
 plt.axis('equal')
 
+
 # create pie charts for stopover points
 f2 = plt.figure(figsize=(5,8))
-plt.pie(class_dic1.values(), colors=colors, startangle=90)
+
+# retrive the patch widges & texts of the plot
+stop_widges = plt.pie(class_dic1.values(),labels = stopover_labels,autopct='%1.1f%%',startangle=90)
+## change the color of each class depend on the color dictionary
+for stop_widge in stop_widges[0]:
+    stop_widge.set_facecolor(dic_color[stop_widge.get_label()])
+## hide the labels of each class on the chart to avoid the overlapping labels
+for stop_widge in stop_widges[1]:
+    stop_widge.set_text(' ')
+
+## set title & legend
 f2.suptitle('Land cover for the stopover sites')
 legend2 = plt.legend(stopover_labels, loc="right")
 plt.axis('equal')
 
 
 plt.show()
-
-
 
 
 # Close the Shapefile
