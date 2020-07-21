@@ -4,11 +4,10 @@ import qgis.utils
 import ogr
 import pandas as pd
 
-#user input
-in_file = r"E:\Munster\python\final project\movebank\goose\outputs\points_reprojected.shp"
-out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers.shp"
-new_layer_name = 'stopovers'
 
+#open the track shape file
+in_file = r"E:\Munster\python\final project\GoosePointPrj\GoosePointPrj\Added_fields\points_reprojected.shp"
+driver = ogr.GetDriverByName('ESRI Shapefile')
 ds=driver.Open(in_file,1)
 
 # Check to see if shapefile is found.
@@ -16,6 +15,9 @@ if ds is None:
     print('Could not open %s' % (in_file))
 
 in_lyr = ds.GetLayer(0)
+
+# Create the output file
+out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers3.shp"
 
 # Delete if output file already exists
 if os.path.exists(out_fn):
@@ -27,7 +29,7 @@ if out_ds is None:
     print('Could not open %s' % (out_fn))
 
 #crate the output layer
-out_lyr = out_ds.CreateLayer(new_layer_name,
+out_lyr = out_ds.CreateLayer('stopovers3',
                              in_lyr.GetSpatialRef(),
                              ogr.wkbPoint)
 
@@ -40,6 +42,7 @@ birds = ['79698', '73053', '72417', '72364', '72413', '79694', '73054']
 
 
 for bird in birds:
+    n = 0
     lats=[]
     lngs=[]
     times=[]
@@ -71,6 +74,8 @@ for bird in birds:
             # "the distance < 5000" condition to make sure, there is no a big gap betwwen the gps points in the last distance
             time_diff = (x_list[-1] - x_list[0]).days
             if (time_diff >= 2 and dis < 5000):
+                #number of siteovers 
+                n+=1
                 #caclulate the center of the group
                 avg_lat = sum(lats) / len(lats)
                 avg_lng = sum(lngs) / len(lngs)
@@ -92,6 +97,8 @@ for bird in birds:
                 lngs=[]
                 times=[]
                 total_distance = 0
+    #print number of stop over for each bird
+    print ("Stopover sites of bird number " + str(bird)+ " " + "is"+ " " + str(n))
             
 
     

@@ -40,18 +40,18 @@ allpoints_labels = class_dic.keys()
 stopover_labels =  class_dic1.keys()
 
 #create color dictionary to use the same color for the teo charts
-dic_color = {'Cropland': 'red', 'Wetland': 'blue',
-             'Needleleaf Evergreen Forest': 'yellow',
+dic_color = {'Cropland': 'violet', 'Wetland': 'teal',
+             'Needleleaf Evergreen Forest': 'orange',
              'Needleleaf Deciduous Forest': 'green',
-             'Shrub': 'orange', 'Water bodies': 'goldenrod',
-             'Paddy field': 'gold',
-             'Cropland/Other Vegetation Mosaic': 'aqua',
-             'Sparse vegetation': 'violet',
-             'Herbaceous': 'pink',
-             'Broadleaf Deciduous Forest': 'gray',
-             'Mixed Forest': 'lawngreen',
-             'Urban': 'teal','Tree Open': 'cadetblue',
-             'Broadleaf Evergreen Forest': 'lightgreen'}
+             'Shrub': 'gold', 'Water bodies': 'blue',
+             'Paddy field': 'sienna',
+             'Cropland/Other Vegetation Mosaic': 'lightgreen',
+             'Sparse vegetation': 'forestgreen',
+             'Herbaceous': 'darkred',
+             'Broadleaf Deciduous Forest': 'yellow',
+             'Mixed Forest': 'red',
+             'Urban': 'rosybrown','Tree Open': 'gray',
+             'Broadleaf Evergreen Forest': 'lightblue'}
 
 # create pie charts for fly points
 f1= plt.figure( figsize=(5,8))
@@ -65,8 +65,10 @@ fly_widges = plt.pie(class_dic.values(),labels = allpoints_labels,autopct=autopc
 for fly_widge in fly_widges[0]:
     fly_widge.set_facecolor(dic_color[fly_widge.get_label()])
 ## hide the labels of each class on the chart to avoid the overlapping labels
-for fly_widge in fly_widges[1]:
-    fly_widge.set_text(' ')
+for fly_widge_text in fly_widges[1]:
+    fly_widge_text.set_text(' ')
+
+
 
 ## set title & legend
 f1.suptitle('Land cover for the fly points')
@@ -83,9 +85,11 @@ stop_widges = plt.pie(class_dic1.values(),labels = stopover_labels,autopct='%1.1
 for stop_widge in stop_widges[0]:
     stop_widge.set_facecolor(dic_color[stop_widge.get_label()])
 ## hide the labels of each class on the chart to avoid the overlapping labels
-for stop_widge in stop_widges[1]:
-    stop_widge.set_text(' ')
+for stop_widge_text in stop_widges[1]:
+    stop_widge_text.set_text(' ')
 
+
+    
 ## set title & legend
 f2.suptitle('Land cover for the stopover sites')
 legend2 = plt.legend(stopover_labels, loc="right")
