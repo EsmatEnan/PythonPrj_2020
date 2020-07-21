@@ -39,7 +39,7 @@ class_dic1 = dict((x1,class_list1.count(x1)) for x1 in set(class_list1))
 allpoints_labels = class_dic.keys()
 stopover_labels =  class_dic1.keys()
 
-#create color dictionary to use the same color for the teo charts
+#create color dictionary to use the same color for the the charts and the same in the final map
 dic_color = {'Cropland': 'violet', 'Wetland': 'teal',
              'Needleleaf Evergreen Forest': 'orange',
              'Needleleaf Deciduous Forest': 'green',
