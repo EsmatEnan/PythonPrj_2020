@@ -16,7 +16,7 @@ The methodological steps are listed below:
 
 
 # Libraray 
-gdal, ogr os, and matplotlib
+gdal, ogr os, numpy,and matplotlib
 
 # Contributors
 Eftychia Koukouraki, Mohammad Alasawedah, Muhammad Esmat Enan, Pablo Cruz
