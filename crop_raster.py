@@ -4,14 +4,15 @@ import ogr
 
 data_dir = r"E:\Munster\python\final project\Data"
 raster = os.path.join(data_dir,'gm_lc_v3_1_2.tif')
-clipped_raster = os.path.join(data_dir, 'clipped_raster_byte3.tif')
+reproj_shp = os.path.join(data_dir, 'goose', 'points.shp')
+buffer = 2 # unit: degrees
 
+clipped_raster = os.path.join(data_dir, 'clipped_raster_byte3.tif')
 
 rast_data_source = gdal.Open(raster)
 
 ####### Cropping the raster #######
 
-reproj_shp = os.path.join(data_dir, 'goose', 'points.shp')
 driver = ogr.GetDriverByName('ESRI Shapefile')
 shape = driver.Open(reproj_shp, 0)
 shp_lyr = shape.GetLayer(0)
@@ -24,7 +25,6 @@ print("GetExtent returned", x_min, x_max, y_min, y_max)
 # Getting the object to translate coordinates to indices
 gt = rast_data_source.GetGeoTransform()
 inv_gt = gdal.InvGeoTransform(gt)
-buffer = 2
 # Converting BBox coordinates to raster indices
 x1, y1= gdal.ApplyGeoTransform(inv_gt, x_min - buffer, y_min - buffer)
 x2, y2= gdal.ApplyGeoTransform(inv_gt, x_max + buffer, y_max + buffer)

@@ -6,8 +6,9 @@ from matplotlib import pyplot as plt
 data_dir = r"C:\Users\efthy\Documents\MasterGeoTech\semester2\Python\Project\data"
 in_file = os.path.join(data_dir, 'goose', 'stopovers.shp')
 attribute = 'VALUE'
-enable_translation = True
 title = 'Land cover for the stopover points'
+
+enable_translation = True
 
 # translateValues: Translates land cover classes from number to string descriptions.
 # Input args

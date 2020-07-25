@@ -7,6 +7,8 @@ import pandas as pd
 
 #open the track shape file
 in_file = r"E:\Munster\python\final project\GoosePointPrj\GoosePointPrj\Added_fields\points_reprojected.shp"
+out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers3.shp"
+
 driver = ogr.GetDriverByName('ESRI Shapefile')
 ds=driver.Open(in_file,1)
 
@@ -15,9 +17,6 @@ if ds is None:
     print('Could not open %s' % (in_file))
 
 in_lyr = ds.GetLayer(0)
-
-# Create the output file
-out_fn = r"E:\Munster\python\final project\movebank\goose\outputs\stopovers3.shp"
 
 # Delete if output file already exists
 if os.path.exists(out_fn):
