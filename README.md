@@ -1,5 +1,5 @@
 # Python Project 2020
-This project aims to examine the preference of the Greater white-fronted goose with regards to its habitat. We will use MODIS  500m land cover product and will overlay the raster file with the point shapefile that represents the stops of the geese along their tracks. We intend to show the preferred habitat(s) by creating a histogram with the dominant CLC classes. Finally, we want to create a map with the bird tracks, overlaid with Land Cover classification raster.
+This project aims to examine the preference of the Greater white-fronted goose with regards to the land cover class at the stopover sites during migration. We will use MODIS  500m land cover product and will overlay the raster file with the point shapefile that represents the stops of the geese along their tracks. In order to study the preferred land cover class(es), we have created a series of tools, for data pre-processing, analysis and visualization.
 
 # RQ
 What are the prefered stop-overs of the Greater white-fronted goose, based on Global Land Cover classification?
@@ -15,8 +15,8 @@ The methodological steps are listed below:
   -Create a map of goose tracks.
 
 
-# Libraray 
-gdal, ogr os, numpy,and matplotlib
+# Libraries 
+gdal/ogr, osr, pyqgis, numpy, matplotlib
 
 # Contributors
 Eftychia Koukouraki, Mohammad Alasawedah, Muhammad Esmat Enan, Pablo Cruz
